@@ -18,9 +18,20 @@ class _MainScreenState extends State<MainScreen> {
         centerTitle: true,
         title: Text('To do'),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.add),
+          InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      height: 250,
+                    );
+                  });
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.add),
+            ),
           ),
         ],
       ),
