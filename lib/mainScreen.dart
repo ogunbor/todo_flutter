@@ -11,6 +11,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   String text = '';
 
+  List<String> todoList = ["Eat", "sleep", "wake"];
+
   void changeText({required String todoText}) {
     setState(() {
       text = todoText;
@@ -20,38 +22,42 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: Text('Hello world'),
-      ),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('To do'),
-        actions: [
-          InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return Padding(
-                      padding: MediaQuery.of(context).viewInsets,
-                      child: Container(
-                        padding: EdgeInsets.all(20),
-                        height: 200,
-                        child: AddTodo(changeText: changeText),
-                      ),
-                    );
-                  });
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.add),
+        drawer: Drawer(
+          child: Text('Hello world'),
+        ),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('To do'),
+          actions: [
+            InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return Padding(
+                        padding: MediaQuery.of(context).viewInsets,
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          height: 200,
+                          child: AddTodo(changeText: changeText),
+                        ),
+                      );
+                    });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Icons.add),
+              ),
             ),
-          ),
-        ],
-      ),
-      body: Container(
-        child: Text('$text'),
-      ),
-    );
+          ],
+        ),
+        body: ListView.builder(
+            itemCount: todoList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text(todoList[index]),
+                leading: Icon(Icons.access_alarm),
+              );
+            }));
   }
 }
