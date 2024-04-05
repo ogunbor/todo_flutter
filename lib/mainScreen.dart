@@ -9,14 +9,13 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String text = '';
-
   List<String> todoList = ["Eat", "sleep", "wake"];
 
-  void changeText({required String todoText}) {
+  void addTodo({required String todoText}) {
     setState(() {
-      text = todoText;
+      todoList.insert(0, todoText);
     });
+    Navigator.pop(context);
   }
 
   @override
@@ -39,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
                         child: Container(
                           padding: EdgeInsets.all(20),
                           height: 200,
-                          child: AddTodo(changeText: changeText),
+                          child: AddTodo(addTodo: addTodo),
                         ),
                       );
                     });
@@ -55,6 +54,23 @@ class _MainScreenState extends State<MainScreen> {
             itemCount: todoList.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          padding: EdgeInsets.all(20),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  todoList.removeAt(index);
+                                });
+                                Navigator.pop(context);
+                              },
+                              child: Text('Mark as done')),
+                        );
+                      });
+                },
                 title: Text(todoList[index]),
                 leading: Icon(Icons.access_alarm),
               );
