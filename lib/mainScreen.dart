@@ -13,10 +13,35 @@ class _MainScreenState extends State<MainScreen> {
   List<String> todoList = [];
 
   void addTodo({required String todoText}) {
+    if (todoList.contains(todoText)) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                "Already exists",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              //content: Text('This todo already exists'),
+              actions: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Close'),
+                )
+              ],
+            );
+          });
+      return;
+    }
+
     setState(() {
       todoList.insert(0, todoText);
     });
+
     updateLocalData();
+
     onTap() {
       Navigator.pop(context);
     }
