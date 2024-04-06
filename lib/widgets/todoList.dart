@@ -23,8 +23,8 @@ class _TodoListBuilderState extends State<TodoListBuilder> {
                   setState(() {
                     widget.todoList.removeAt(index);
                   });
-                  Navigator.pop(context);
                   widget.updateLocalData();
+                  Navigator.pop(context);
                 },
                 child: Text('Mark as done')),
           );
@@ -40,12 +40,50 @@ class _TodoListBuilderState extends State<TodoListBuilder> {
         : ListView.builder(
             itemCount: widget.todoList.length,
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                onTap: () {
-                  onItemClicked(index: index);
+              return Dismissible(
+                key: UniqueKey(),
+                direction: DismissDirection.startToEnd,
+                // secondaryBackground: Container(
+                //   color: Colors.red,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.all(8.0),
+                //         child: Icon(Icons.delete),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                background: Container(
+                  color: Colors.green,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(Icons.check),
+                      ),
+                    ],
+                  ),
+                ),
+                onDismissed: (direction) {
+                  setState(() {
+                    widget.todoList.removeAt(index);
+                  });
+                  widget.updateLocalData();
+                  // if (direction == DismissDirection.startToEnd) {
+                  //   print('Mark as spam');
+                  // } else {
+                  //   print('Delete');
+                  // }
                 },
-                title: Text(widget.todoList[index]),
-                leading: Icon(Icons.access_alarm),
+                child: ListTile(
+                  onTap: () {
+                    onItemClicked(index: index);
+                  },
+                  title: Text(widget.todoList[index]),
+                  leading: Icon(Icons.access_alarm),
+                ),
               );
             });
   }
