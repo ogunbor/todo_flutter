@@ -33,16 +33,20 @@ class _TodoListBuilderState extends State<TodoListBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: widget.todoList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            onTap: () {
-              onItemClicked(index: index);
-            },
-            title: Text(widget.todoList[index]),
-            leading: Icon(Icons.access_alarm),
-          );
-        });
+    return (widget.todoList.isEmpty)
+        ? Center(
+            child: Text('No items to display'),
+          )
+        : ListView.builder(
+            itemCount: widget.todoList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                onTap: () {
+                  onItemClicked(index: index);
+                },
+                title: Text(widget.todoList[index]),
+                leading: Icon(Icons.access_alarm),
+              );
+            });
   }
 }
