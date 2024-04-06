@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_flutter/addTodo.dart';
+import 'package:todo_flutter/widgets/todoList.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -61,62 +62,51 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   @override
+  void initState() {
+    loadData();
+    super.initState();
+  }
+
+  void showAddTodoBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Container(
+              padding: EdgeInsets.all(20),
+              height: 200,
+              child: AddTodo(addTodo: addTodo),
+            ),
+          );
+        });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(
-          child: Text('Hello world'),
-        ),
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('To do'),
-          actions: [
-            InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return Padding(
-                        padding: MediaQuery.of(context).viewInsets,
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          height: 200,
-                          child: AddTodo(addTodo: addTodo),
-                        ),
-                      );
-                    });
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.add),
-              ),
+      drawer: Drawer(
+        child: Text('Hello world'),
+      ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('To do'),
+        actions: [
+          InkWell(
+            onTap: () {
+              showAddTodoBottomSheet();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.add),
             ),
-          ],
-        ),
-        body: ListView.builder(
-            itemCount: todoList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          padding: EdgeInsets.all(20),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  todoList.removeAt(index);
-                                });
-                                Navigator.pop(context);
-                                updateLocalData();
-                              },
-                              child: Text('Mark as done')),
-                        );
-                      });
-                },
-                title: Text(todoList[index]),
-                leading: Icon(Icons.access_alarm),
-              );
-            }));
+          ),
+        ],
+      ),
+      body: TodoListBuilder(
+        todoList: todoList,
+        updateLocalData: updateLocalData,
+      ),
+    );
   }
 }
