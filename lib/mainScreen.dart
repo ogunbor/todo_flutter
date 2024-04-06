@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_flutter/addTodo.dart';
 import 'package:todo_flutter/widgets/todoList.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -86,7 +87,42 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-        child: Text('Hello world'),
+        child: Column(
+          children: [
+            Container(
+              color: Colors.blueGrey[800],
+              height: 200,
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  "To do",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                launchUrl(Uri.parse("https://google.com"));
+              },
+              leading: Icon(Icons.person),
+              title: Text(
+                "About me",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                launchUrl(Uri.parse("mailto:ssandbox@gmail.com"));
+              },
+              leading: Icon(Icons.email),
+              title: Text(
+                "Contact me",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ),
       ),
       appBar: AppBar(
         centerTitle: true,
